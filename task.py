@@ -6,10 +6,7 @@ import urllib2
 random.seed()
 
 while True:
-    for i in xrange(5):
-        n = random.random()
-        time.sleep(n)
-    req = urllib2.Request('http://requestb.in/tg7qo0tg')
+    req = urllib2.Request('http://dfectuoso.com/')
     response = urllib2.urlopen(req)
     the_page = response.read()    
 
