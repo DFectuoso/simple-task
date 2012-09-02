@@ -9,6 +9,8 @@ from tweepy import *
 
 BASE_URL = "0.0.0.0:3000"
 
+rockstartup = []
+
 def get_messages_from_user(user, page=0):
     api = API()
     print "Fetching user " + user
@@ -16,24 +18,31 @@ def get_messages_from_user(user, page=0):
     print "Fetching page:" + str(page)
     time.sleep(30)
     if len(messages) > 0:
-      return messages + get_messages_from_user(user,page+1)
+      print "The last message of the user is from " + str(messages[-1].created_at)
+      print "While the last rockstartup1 message is from: "+str(rockstartup[-1][1])
+      if messages[-1].created_at > rockstartup[-1][1]:
+        return messages + get_messages_from_user(user,page+1)
+      else:
+        return messages
     else:
       return messages 
 
 def get_id_to_crawl():
     response = urllib2.urlopen('http://' + BASE_URL + '/get-number').read()
     print "Crawling " + str(response)
-    return response 
+    foo = str(response).strip()
+    print "foo|" + foo + "|foo"
+    return foo
 
 def send_id(user_id,hit_30,hit_15,hit_10,hit_5,hit_3,hit_1,hit_i_30,hit_i_15,hit_i_10,hit_i_5,hit_i_3,hit_i_1):
-    response = urllib2.urlopen('http://' + BASE_URL + '/set-info?user='+user_id+"&hit_30="+hit_30+"&hit_15="+ hit_15+"&hit_10="+ hit_10 +"&hit_5="+ hit_5 +"&hit_3="+ hit_3 +"&hit_1="+ hit_1 +"&hit_i_30="+ hit_i_30 +"&hit_i_15="+ hit_i_15 +"&hit_i_10="+ hit_i_10 +"&hit_i_5="+ hit_i_5 +"&hit_i_3="+ hit_i_3 +"&hit_i_1=" + hit_i_1) 
+    response = urllib2.urlopen('http://' + BASE_URL + '/set-info?user='+user_id+"&hit_30="+str(hit_30)+"&hit_15="+ str(hit_15)+"&hit_10="+ str(hit_10) +"&hit_5="+ str(hit_5) +"&hit_3="+ str(hit_3) +"&hit_1="+ str(hit_1) +"&hit_i_30="+ str(hit_i_30) +"&hit_i_15="+ str(hit_i_15) +"&hit_i_10="+ str(hit_i_10) +"&hit_i_5="+ str(hit_i_5) +"&hit_i_3="+ str(hit_i_3) +"&hit_i_1=" + str(hit_i_1))
     return
 
 def check_for_hit(time_delta_minutes, target_message, messages):
     for message in messages:
         ## Message is now the user message that if is within the time range and with the client, is a hit
         if target_message[0] == message.source:
-            message_time = datetime.strptime(message.created_at,"%Y-%m-%d %H:%M:%S")
+            message_time = message.created_at
             timedelta = abs((target_message[1] - message_time).total_seconds())
             hit_timedelta = time_delta_minutes * 60
             if timedelta < hit_timedelta:
@@ -45,7 +54,6 @@ def check_for_hit(time_delta_minutes, target_message, messages):
 
 # Wake up, read rockstartuo file
 file = open( "foo", "r" )
-rockstartup = []
 while 1:
     index = file.readline()
     if not index:
@@ -110,5 +118,11 @@ while 1:
             if rockstartup_message == "Twitter for iPad":
                 hit_i_1 = hit_i_1 + 1
        
+    print "About to send hits:"
+    print "hit 30: " + str(hit_30) + " " + str(hit_i_30)
+    print "hit 15: " + str(hit_15) + " " + str(hit_i_15)
+    print "hit 10: " + str(hit_10) + " " + str(hit_i_10)
+    print "hit 5: " + str(hit_5) + " " + str(hit_i_5)
+    print "hit 3: " + str(hit_3) + " " + str(hit_i_3)
+    print "hit 1: " + str(hit_1) + " " + str(hit_i_1)
     send_id(id_to_crawl,hit_30,hit_15,hit_10,hit_5,hit_3,hit_1,hit_i_30,hit_i_15,hit_i_10,hit_i_5,hit_i_3,hit_i_1)
-    break
