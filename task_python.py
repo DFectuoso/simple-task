@@ -2,38 +2,31 @@ from datetime import datetime
 import sys
 
 import urllib2
-
+import time
 #import tweepy
 sys.path.insert(0, 'libs/tweepy.zip')
 from tweepy import *
 
-BASE_URL = "0.0.0.0"
+BASE_URL = "0.0.0.0:3000"
 
 def get_messages_from_user(user, page=0):
     api = API()
+    print "Fetching user " + user
     messages = api.user_timeline(user_id=user,count=200, page=page)
     print "Fetching page:" + str(page)
-
-    ##### THis forces one page only    
-    return messages
-
+    time.sleep(30)
     if len(messages) > 0:
       return messages + get_messages_from_user(user,page+1)
     else:
       return messages 
 
 def get_id_to_crawl():
-    #### dfect
-    return "1981171"
-
-    #### rockstartup1
-    return "608629166"
-
-    response = urllib2.urlopen('http://' + BASE_URL + '/get-number') 
-    return reponse
+    response = urllib2.urlopen('http://' + BASE_URL + '/get-number').read()
+    print "Crawling " + str(response)
+    return response 
 
 def send_id(user_id,hit_30,hit_15,hit_10,hit_5,hit_3,hit_1,hit_i_30,hit_i_15,hit_i_10,hit_i_5,hit_i_3,hit_i_1):
-    response = urllib2.urlopen('http://' + BASE_URL + '/set-info?user='+user_id+"&hit_30="+hit_30+"&hit_15="+ hit_15+"&hit_10="+ hit_10 +"&hit_5="+ hit_5 +"&hit_3="+ hit_3 +"&hit_1="+ hit_1 +"&hit_i_30="+ hit_i_30 +"&hit_i_15="+ hit_i_15 +"&hit_i_10="+i hit_i_10 +"&hit_i_5="+ hit_i_5 +"&hit_i_3="+ hit_i_3 +"&hit_i_1=" + hit_i_1) 
+    response = urllib2.urlopen('http://' + BASE_URL + '/set-info?user='+user_id+"&hit_30="+hit_30+"&hit_15="+ hit_15+"&hit_10="+ hit_10 +"&hit_5="+ hit_5 +"&hit_3="+ hit_3 +"&hit_1="+ hit_1 +"&hit_i_30="+ hit_i_30 +"&hit_i_15="+ hit_i_15 +"&hit_i_10="+ hit_i_10 +"&hit_i_5="+ hit_i_5 +"&hit_i_3="+ hit_i_3 +"&hit_i_1=" + hit_i_1) 
     return
 
 def check_for_hit(time_delta_minutes, target_message, messages):
@@ -57,9 +50,12 @@ while 1:
     index = file.readline()
     if not index:
         break
-    client = file.readline()
-    message_time = datetime.strptime(file.readline(), "%Y-%m-%d %H:%M:%S")
+    client = file.readline().strip()
+    foo = file.readline().strip()
+    message_time = datetime.strptime(foo, "%Y-%m-%d %H:%M:%S")
     rockstartup.append([client,message_time]) 
+
+print "Finish set up"
 
 while 1:
     hit_30 = 0
@@ -82,7 +78,7 @@ while 1:
     # Get all messages
     messages = get_messages_from_user(id_to_crawl)
 
-    for rockstartup_message in rockstarup:
+    for rockstartup_message in rockstartup:
         ### For each message, we check if we have any message that is <5,5>,<3,3>,<1,1>
         if check_for_hit(30,rockstartup_message,messages):
             hit_30 = hit_30 + 1
