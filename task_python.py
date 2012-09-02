@@ -10,7 +10,7 @@ import urllib2
 sys.path.insert(0, 'libs/tweepy.zip')
 from tweepy import *
 
-BASE_URL = "http://ec2-107-21-86-221.compute-1.amazonaws.com/"
+BASE_URL = "ec2-107-21-86-221.compute-1.amazonaws.com/"
 
 rockstartup = []
 
@@ -72,6 +72,7 @@ print "Finish set up"
 class MyDaemon(Daemon):
   def run(self):
     while True:
+      print "Here"
       hit_30 = 0
       hit_15 = 0
       hit_10 = 0
