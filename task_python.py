@@ -97,32 +97,32 @@ class MyDaemon(Daemon):
           ### For each message, we check if we have any message that is <5,5>,<3,3>,<1,1>
           if check_for_hit(30,rockstartup_message,messages):
               hit_30 = hit_30 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_30 = hit_i_30 + 1
    
           if check_for_hit(15,rockstartup_message,messages):
               hit_15 = hit_15 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_15 = hit_i_15 + 1
    
           if check_for_hit(10,rockstartup_message,messages):
               hit_10 = hit_10 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_10 = hit_i_10 + 1
    
           if check_for_hit(5,rockstartup_message,messages):
               hit_5 = hit_5 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_5 = hit_i_5 + 1
    
           if check_for_hit(3,rockstartup_message,messages):
               hit_3 = hit_3 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_3 = hit_i_3 + 1
    
           if check_for_hit(1,rockstartup_message,messages):
               hit_1 = hit_1 + 1
-              if rockstartup_message == "Twitter for iPad":
+              if rockstartup_message[0] == "Twitter for iPad":
                   hit_i_1 = hit_i_1 + 1
          
       print "About to send hits:"
