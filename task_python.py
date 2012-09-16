@@ -19,13 +19,13 @@ def get_messages_from_user(user, page=0):
     print "Fetching user " + user
     try:  
       messages = api.user_timeline(user_id=user,count=200, page=page)
-    except error.TweepError:
-      print "We are on the limit, wait 30 secs, and call this again"
-      time.sleep(30)
+    except:
+      print "We are on the limit, wait 15 secs, and call this again"
+      time.sleep(15)
       return get_messages_from_user(user,page)
 
     print "Fetching page:" + str(page)
-    time.sleep(30)
+    #time.sleep(30)
     if len(messages) > 0:
       print "The last message of the user is from " + str(messages[-1].created_at)
       print "While the last rockstartup1 message is from: "+str(rockstartup[-1][1])
