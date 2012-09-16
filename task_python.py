@@ -20,6 +20,7 @@ def get_messages_from_user(user, page=0):
     try:  
       messages = api.user_timeline(user_id=user,count=200, page=page)
     except:
+      sys.exit()
       print "We are on the limit, wait 15 secs, and call this again"
       time.sleep(15)
       return get_messages_from_user(user,page)
